@@ -12,8 +12,8 @@ app.use((req,res,next)=>{
   next();
 });
 
-const CLIENT_ID = process.env.CLIENT_ID || "925188c5a9f8f1b5587a9e91eab9156a";
-const CLIENT_SECRET = process.env.CLIENT_SECRET || "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";
+const CLIENT_ID = process.env.CLIENT_ID || "69e4ac5851c444f2e38360a7cc62d70a";
+const CLIENT_SECRET = process.env.CLIENT_SECRET || "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";
 const STORE = process.env.STORE || "ven1pi-0t.myshopify.com";
 const REDIRECT_URI = process.env.REDIRECT_URI || "https://shopify-proxy-production-7408.up.railway.app/callback";
 
