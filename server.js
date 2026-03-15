@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require("express");
 const fetch = require("node-fetch");
+const fs = require("fs");
+const path = require("path");
 const app = express();
 
 app.use(express.json());
@@ -21,9 +23,18 @@ let accessToken = null;
 
 app.get("/",(req,res)=>{
   if(accessToken){
-    res.send("<h2>Proxy attivo con token!</h2><p style='font-family:monospace;word-break:break-all;background:#eee;padding:12px'>"+accessToken+"</p>");
+    res.send("<h2>Proxy attivo!</h2><p>Token attivo</p><p><a href='/app'><button style='padding:12px 24px;background:#7c3aed;color:white;border:none;border-radius:6px;font-size:16px;cursor:pointer'>Apri interfaccia upload</button></a></p>");
   } else {
     res.send("<h2>Shopify Proxy</h2><a href='/auth'><button style='padding:12px 24px;background:#7c3aed;color:white;border:none;border-radius:6px;font-size:16px;cursor:pointer'>Ottieni Token Shopify</button></a>");
+  }
+});
+
+app.get("/app",(req,res)=>{
+  const htmlPath = path.join(__dirname, "app.html");
+  if(fs.existsSync(htmlPath)){
+    res.sendFile(htmlPath);
+  } else {
+    res.status(404).send("app.html non trovato");
   }
 });
 
@@ -44,7 +55,7 @@ app.get("/callback",async(req,res)=>{
     const d=await r.json();
     accessToken=d.access_token;
     console.log("Token:",accessToken);
-    res.send("<h2>Token ottenuto!</h2><p style='font-family:monospace;word-break:break-all;background:#eee;padding:12px'>"+accessToken+"</p>");
+    res.redirect("/app");
   } catch(e){
     res.send("Errore: "+e.message);
   }
